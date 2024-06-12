@@ -20,5 +20,14 @@ function login(){
         body: JSON.stringify(req),
     })
     .then((res) => res.json())
-    .then((res) => console.log(res));
+    .then((res) => {
+        if (res.succes){
+            location.href = "/";
+        } else {
+            alert(res.msg);
+        }
+    })
+    .catch((err) => {
+        console.error(new Error("로그인 중 오류 발생"));
+    })
 }
