@@ -11,7 +11,7 @@ function login(){
         id: id.value,
         password: password.value,
     };
-
+    
     fetch("/login", {
         method: "POST",
         headers: {
@@ -21,7 +21,7 @@ function login(){
     })
     .then((res) => res.json())
     .then((res) => {
-        if (res.sucess){
+        if (res.succes){
             location.href = "/";
         } else {
             alert(res.msg);
