@@ -1,9 +1,6 @@
 "use strict";
 
-const users = {
-    id: ["lifecraft3", "lifecraft"],
-    psword: ["1234", "1234"],
-};
+const UserStorage = require("../../models/UserStorage");
 
 const output = {
     home: (req, res) =>{
@@ -19,19 +16,18 @@ const process = {
         const id = req.body.id,
             password = req.body.password;
         
+        const users = UserStorage.getUsers("id", "psword");
+        const response = {};
         if (users.id.includes(id)){
             const idx = users.id.indexOf(id);
             if (users.psword[idx] === password){
-                return res.json({
-                    succes: true,
-                });
+                response.succes = true;
+                return res.json(response);
             }
         }
-
-        return res.json({
-            succes: false,
-            msg: "로그인에 실패하였습니다.",
-        });
+        response.succes = false;
+        response.msg = "로그인에 실패하였습니다.";
+        return res.json(response);
     },
 };
 
