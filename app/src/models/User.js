@@ -3,20 +3,26 @@
 const UserStorage = require("./UserStorage");
 
 class User {
-    constructor(body) {
-        this.body = body;
+  constructor(body) {
+    this.body = body;
+  }
+  login() {
+    const client = this.body;
+    const { id, psword } = UserStorage.getUserInfo(client.id);
+    if (id) {
+      if (id === client.id && psword === client.psword) {
+        return { succes: true };
+      }
+      return { succes: false, msg: "비밀번호가 일치하지 않습니다." };
     }
-    login() {
-        const body = this.body;
-        const { id, psword } =  UserStorage.getUserInfo(body.id);
-        if (id){
-            if (id === body.id && psword === body.psword) {
-                return { succes: true };
-            }
-            return { succes: false, msg: "비밀번호가 일치하지 않습니다." };
-        }
-        return { succes: false, msg: "아이디가 존재하지 않습니다." };
-    }
+    return { succes: false, msg: "아이디가 존재하지 않습니다." };
+  }
+
+  register() {
+    const client = this.body;
+    const response = UserStorage.save(client);
+    return response;
+  }
 }
 
 module.exports = User;
