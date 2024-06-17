@@ -8,14 +8,18 @@ class User {
   }
   async login() {
     const client = this.body;
-    const { id, psword } = await UserStorage.getUserInfo(client.id);
-    if (id) {
-      if (id === client.id && psword === client.psword) {
-        return { succes: true };
+    try {
+      const user = await UserStorage.getUserInfo(client.id);
+      if (user) {
+        if (user.id === client.id && user.psword === client.psword) {
+          return { succes: true };
+        }
+        return { succes: false, msg: "비밀번호가 일치하지 않습니다." };
       }
-      return { succes: false, msg: "비밀번호가 일치하지 않습니다." };
+      return { succes: false, msg: "아이디가 존재하지 않습니다." };
+    } catch (err) {
+      return { succes: false, msg: err };
     }
-    return { succes: false, msg: "아이디가 존재하지 않습니다." };
   }
 
   async register() {
